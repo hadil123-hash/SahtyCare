@@ -1,0 +1,20 @@
+@SahtyApi_HostAddress = https://localhost:5001
+
+### Register (first user becomes Admin if DB empty)
+POST {{SahtyApi_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "client1@test.local",
+  "password": "Client123$",
+  "fullName": "Client One"
+}
+
+### Login
+POST {{SahtyApi_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@sahty.local",
+  "password": "Admin123$"
+}

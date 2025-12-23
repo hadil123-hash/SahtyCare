@@ -1,0 +1,65 @@
+@page
+@model Sahty.Web.Areas.Client.Pages.PrescriptionsModel
+@{
+    ViewData["Title"] = "Client - Mes ordonnances";
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+{
+    <div class="alert alert-warning">@Model.ErrorMessage</div>
+}
+
+@if (Model.IsLoading)
+{
+    <div class="alert alert-light d-flex align-items-center gap-2">
+        <div class="spinner-border spinner-border-sm" role="status"></div>
+        <div>Chargement...</div>
+    </div>
+}
+
+<div class="card-modern p-4">
+    <div class="d-flex align-items-center justify-content-between mb-2">
+        <h2 class="h5 mb-0">Mes ordonnances</h2>
+        <span class="pill chip-muted">@Model.Items.Count</span>
+    </div>
+
+    @if (Model.Items.Count == 0 && string.IsNullOrWhiteSpace(Model.ErrorMessage))
+    {
+        <div class="text-muted">Aucune ordonnance trouvee.</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table align-middle table-modern">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Dosage</th>
+                        <th>Statut</th>
+                        <th>Medicament</th>
+                        <th>Medecin</th>
+                        <th>Pharmacien</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var p in Model.Items)
+                {
+                    var status = (p.Status ?? "").ToLowerInvariant();
+                    <tr>
+                        <td>@p.DateIssued.ToString("yyyy-MM-dd")</td>
+                        <td class="text-muted">@p.Dosage</td>
+                        <td>
+                            <span class="soft-badge @(status == "accepted" ? "success" : status == "refused" ? "warning" : "")">@p.Status</span>
+                        </td>
+                        <td class="text-muted">@(!string.IsNullOrWhiteSpace(p.MedicationName) ? p.MedicationName : p.MedicationId.ToString())</td>
+                        <td class="text-muted">@(!string.IsNullOrWhiteSpace(p.DoctorName) ? p.DoctorName : p.DoctorId.ToString())</td>
+                        <td class="text-muted">@(!string.IsNullOrWhiteSpace(p.PharmacistName) ? p.PharmacistName : p.PharmacistId.ToString())</td>
+                        <td class="text-muted">@p.Notes</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

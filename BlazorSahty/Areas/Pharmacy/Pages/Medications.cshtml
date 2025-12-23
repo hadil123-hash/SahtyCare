@@ -1,0 +1,169 @@
+@page
+@model Sahty.Web.Areas.Pharmacy.Pages.MedicationsModel
+@{
+    ViewData["Title"] = "Pharmacy - Medicaments";
+    var openCreate = Model.ShowCreateForm ? "true" : null;
+    var openUpdate = Model.ShowUpdateForm ? "true" : null;
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+{
+    <div class="alert alert-warning">@Model.ErrorMessage</div>
+}
+
+@if (Model.IsLoading)
+{
+    <div class="alert alert-light d-flex align-items-center gap-2">
+        <div class="spinner-border spinner-border-sm" role="status"></div>
+        <div>Chargement...</div>
+    </div>
+}
+
+<div class="row g-3">
+    <div class="col-12 col-lg-5">
+        <div class="card-modern p-4">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <h2 class="h5 mb-0">Actions</h2>
+                <span class="pill">Pharmacie</span>
+            </div>
+            <div class="d-flex flex-wrap gap-2">
+                <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#create-medication-modal">Ajouter un medicament</button>
+            </div>
+            <div class="text-muted small mt-2">Utilisez "Modifier" dans la liste pour mettre a jour.</div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-7">
+        <div class="card-modern p-4">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <h2 class="h5 mb-0">Medicaments</h2>
+                <div class="d-flex align-items-center gap-2">
+                    <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#create-medication-modal">Ajouter</button>
+                    <span class="badge text-bg-light border">@Model.Items.Count</span>
+                </div>
+            </div>
+
+            @if (Model.Items.Count == 0 && string.IsNullOrWhiteSpace(Model.ErrorMessage))
+            {
+                <div class="text-muted">Aucun medicament trouve.</div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nom</th>
+                                <th>Stock</th>
+                                <th>Description</th>
+                                <th style="width:180px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var m in Model.Items)
+                        {
+                            <tr>
+                                <td>@m.Id</td>
+                                <td>@m.Name</td>
+                                <td>@m.Stock</td>
+                                <td>@m.Description</td>
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        <a class="btn btn-sm btn-outline-primary" asp-page="./Medications" asp-route-form="edit" asp-route-id="@m.Id">Modifier</a>
+                                        <form method="post" asp-page-handler="Delete" onsubmit="return confirm('Supprimer ce medicament ?');">
+                                            <input type="hidden" name="id" value="@m.Id" />
+                                            <button class="btn btn-sm btn-outline-danger" type="submit">Supprimer</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="create-medication-modal" tabindex="-1" aria-labelledby="createMedicationLabel" aria-hidden="true" data-modal-open="@openCreate">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createMedicationLabel">Creer un medicament</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            </div>
+            <div class="modal-body">
+                @if (!string.IsNullOrWhiteSpace(Model.CreateError))
+                {
+                    <div class="alert alert-danger">@Model.CreateError</div>
+                }
+                <div asp-validation-summary="All" class="text-danger small"></div>
+
+                <form method="post" asp-page-handler="Create" class="vstack gap-3">
+                    <div>
+                        <label class="form-label">Nom</label>
+                        <input class="form-control" asp-for="Create.Name" />
+                    </div>
+                    <div>
+                        <label class="form-label">Stock</label>
+                        <input class="form-control" asp-for="Create.Stock" type="number" />
+                    </div>
+                    <div>
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" asp-for="Create.Description" rows="3"></textarea>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-primary" type="submit">Creer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="edit-medication-modal" tabindex="-1" aria-labelledby="editMedicationLabel" aria-hidden="true" data-modal-open="@openUpdate">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editMedicationLabel">Mettre a jour</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+            </div>
+            <div class="modal-body">
+                @if (!string.IsNullOrWhiteSpace(Model.UpdateError))
+                {
+                    <div class="alert alert-danger">@Model.UpdateError</div>
+                }
+                <div asp-validation-summary="All" class="text-danger small"></div>
+
+                <form method="post" asp-page-handler="Update" class="vstack gap-3">
+                    <input type="hidden" asp-for="Update.Id" />
+                    <div>
+                        <label class="form-label">Id</label>
+                        <input class="form-control" value="@Model.Update.Id" readonly />
+                    </div>
+                    <div>
+                        <label class="form-label">Nom</label>
+                        <input class="form-control" asp-for="Update.Name" />
+                    </div>
+                    <div>
+                        <label class="form-label">Stock</label>
+                        <input class="form-control" asp-for="Update.Stock" type="number" />
+                    </div>
+                    <div>
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" asp-for="Update.Description" rows="3"></textarea>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-outline-primary" type="submit">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

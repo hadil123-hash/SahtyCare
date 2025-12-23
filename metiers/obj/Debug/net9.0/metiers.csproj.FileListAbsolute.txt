@@ -1,0 +1,22 @@
+G:\faculte study\IIT\GLID 2\Semester1\NET\EX\API\metiers\bin\Debug\net9.0\metiers.deps.json
+G:\faculte study\IIT\GLID 2\Semester1\NET\EX\API\metiers\bin\Debug\net9.0\metiers.dll
+G:\faculte study\IIT\GLID 2\Semester1\NET\EX\API\metiers\bin\Debug\net9.0\metiers.pdb
+G:\faculte study\IIT\GLID 2\Semester1\NET\EX\API\metiers\obj\Debug\net9.0\metiers.GeneratedMSBuildEditorConfig.editorconfig
+G:\faculte study\IIT\GLID 2\Semester1\NET\EX\API\metiers\obj\Debug\net9.0\metiers.AssemblyInfoInputs.cache
+G:\faculte study\IIT\GLID 2\Semester1\NET\EX\API\metiers\obj\Debug\net9.0\metiers.AssemblyInfo.cs
+G:\faculte study\IIT\GLID 2\Semester1\NET\EX\API\metiers\obj\Debug\net9.0\metiers.csproj.CoreCompileInputs.cache
+G:\faculte study\IIT\GLID 2\Semester1\NET\EX\API\metiers\obj\Debug\net9.0\metiers.dll
+G:\faculte study\IIT\GLID 2\Semester1\NET\EX\API\metiers\obj\Debug\net9.0\refint\metiers.dll
+G:\faculte study\IIT\GLID 2\Semester1\NET\EX\API\metiers\obj\Debug\net9.0\metiers.pdb
+G:\faculte study\IIT\GLID 2\Semester1\NET\EX\API\metiers\obj\Debug\net9.0\ref\metiers.dll
+C:\Users\ASUS\source\repos\Sahty.API\metiers\bin\Debug\net9.0\metiers.deps.json
+C:\Users\ASUS\source\repos\Sahty.API\metiers\bin\Debug\net9.0\metiers.dll
+C:\Users\ASUS\source\repos\Sahty.API\metiers\bin\Debug\net9.0\metiers.pdb
+C:\Users\ASUS\source\repos\Sahty.API\metiers\obj\Debug\net9.0\metiers.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ASUS\source\repos\Sahty.API\metiers\obj\Debug\net9.0\metiers.AssemblyInfoInputs.cache
+C:\Users\ASUS\source\repos\Sahty.API\metiers\obj\Debug\net9.0\metiers.AssemblyInfo.cs
+C:\Users\ASUS\source\repos\Sahty.API\metiers\obj\Debug\net9.0\metiers.csproj.CoreCompileInputs.cache
+C:\Users\ASUS\source\repos\Sahty.API\metiers\obj\Debug\net9.0\metiers.dll
+C:\Users\ASUS\source\repos\Sahty.API\metiers\obj\Debug\net9.0\refint\metiers.dll
+C:\Users\ASUS\source\repos\Sahty.API\metiers\obj\Debug\net9.0\metiers.pdb
+C:\Users\ASUS\source\repos\Sahty.API\metiers\obj\Debug\net9.0\ref\metiers.dll

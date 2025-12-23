@@ -1,0 +1,61 @@
+@page
+@model Sahty.Web.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "Connexion";
+}
+
+<div class="auth-hero">
+    <div class="container-xxl">
+    <div class="auth-card">
+        <div>
+            <div class="auth-brand mb-3">
+                <div class="logo">S</div>
+                <div>
+                    <div class="fw-bold">Sahty Care</div>
+                    <div class="small text-muted">Centre médical digital</div>
+                </div>
+            </div>
+            <div class="pill mb-3">Bienvenue</div>
+            <h1 class="h4 mb-1">Connexion</h1>
+            <p class="text-muted mb-4">Accède à ton espace </p>
+
+            @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+            {
+                <div class="alert alert-danger">@Model.ErrorMessage</div>
+            }
+
+            <form method="post" class="vstack gap-3">
+                <div>
+                    <label class="form-label">Email</label>
+                    <input class="form-control form-control-lg" asp-for="Input.Email" placeholder="ex: ali@gmail.com" />
+                    <span class="text-danger small" asp-validation-for="Input.Email"></span>
+                </div>
+
+                <div>
+                    <label class="form-label">Mot de passe</label>
+                    <input class="form-control form-control-lg" asp-for="Input.Password" type="password" placeholder="********" />
+                    <span class="text-danger small" asp-validation-for="Input.Password"></span>
+                </div>
+
+                <button class="btn btn-primary btn-lg w-100" type="submit">Se connecter</button>
+
+                <div class="small text-muted text-center">
+                    Pas de compte ? <a asp-page="/Account/Register">Créer un compte</a>
+                </div>
+            </form>
+        </div>
+        <div class="auth-aside">
+            <div class="gradient-badge mb-2">Sahty</div>
+            <div class="h5 mb-2">Bienvenu !</div>
+            <ul class="small text-muted mb-0">
+                <li>RDV & ordonnances centralisés</li>
+               
+            </ul>
+        </div>
+    </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

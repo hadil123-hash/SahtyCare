@@ -1,0 +1,135 @@
+@using Sahty.Web.Models
+@{
+    var isAuth = User?.Identity?.IsAuthenticated ?? false;
+}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Sahty</title>
+
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="@(isAuth ? "bg-surface" : "bg-landing")">
+@if (isAuth)
+{
+    <div class="app-shell">
+        <aside class="sidebar shadow-sm">
+            <div class="brand">
+                <div class="logo">S</div>
+                <div class="brand-text">
+                    <div class="fw-bold">Sahty Care</div>
+                    <div class="small text-muted">Medical Center</div>
+                </div>
+            </div>
+
+            <div class="nav-label">Navigation</div>
+            <nav class="nav flex-column px-2">
+                <a class="nav-link" asp-page="/Dashboard"><span class="nav-icon">&#128202;</span>Dashboard</a>
+
+                @if (User.IsInRole(AppRoles.Admin))
+                {
+                    <div class="nav-label">Admin</div>
+                    <a class="nav-link" asp-area="Admin" asp-page="/Index"><span class="nav-icon">&#128203;</span>Overview</a>
+                    <a class="nav-link" asp-area="Admin" asp-page="/Users"><span class="nav-icon">&#128101;</span>Utilisateurs</a>
+                    <a class="nav-link" asp-area="Admin" asp-page="/Appointments"><span class="nav-icon">&#128197;</span>Rendez-vous</a>
+                    <a class="nav-link" asp-area="Admin" asp-page="/Doctors"><span class="nav-icon">&#9877;</span>Médecins</a>
+                    <a class="nav-link" asp-area="Admin" asp-page="/Patients"><span class="nav-icon">&#128100;</span>Patients</a>
+                    <a class="nav-link" asp-area="Admin" asp-page="/Pharmacists"><span class="nav-icon">&#128138;</span>Pharmaciens</a>
+                }
+                @if (User.IsInRole(AppRoles.Doctor))
+                {
+                    <div class="nav-label">Médecin</div>
+                    <a class="nav-link" asp-area="Doctor" asp-page="/Index"><span class="nav-icon">&#128202;</span>Tableau</a>
+                    <a class="nav-link" asp-area="Doctor" asp-page="/Appointments"><span class="nav-icon">&#128197;</span>Rendez-vous</a>
+                    <a class="nav-link" asp-area="Doctor" asp-page="/Prescriptions"><span class="nav-icon">&#128221;</span>Ordonnances</a>
+                }
+                @if (User.IsInRole(AppRoles.Pharmacy))
+                {
+                    <div class="nav-label">Pharmacie</div>
+                    <a class="nav-link" asp-area="Pharmacy" asp-page="/Index"><span class="nav-icon">&#128202;</span>Tableau</a>
+                    <a class="nav-link" asp-area="Pharmacy" asp-page="/Prescriptions"><span class="nav-icon">&#128221;</span>Ordonnances</a>
+                    <a class="nav-link" asp-area="Pharmacy" asp-page="/Medications"><span class="nav-icon">&#128138;</span>Médicaments</a>
+                }
+                @if (User.IsInRole(AppRoles.Client))
+                {
+                    <div class="nav-label">Patient</div>
+                    <a class="nav-link" asp-area="Client" asp-page="/Index"><span class="nav-icon">&#128202;</span>Tableau</a>
+                    <a class="nav-link" asp-area="Client" asp-page="/Appointments"><span class="nav-icon">&#128197;</span>Mes RDV</a>
+                    <a class="nav-link" asp-area="Client" asp-page="/Prescriptions"><span class="nav-icon">&#128221;</span>Mes ordonnances</a>
+                }
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="small text-muted">&copy; @DateTime.Now.Year Sahty</div>
+            </div>
+        </aside>
+
+        <main class="main">
+            <header class="topbar shadow-sm">
+                <div class="d-flex align-items-center gap-2">
+                    <button class="btn btn-sm btn-outline-secondary d-md-none" type="button" onclick="toggleSidebar()">&#9776;</button>
+                    <div class="fw-semibold">@ViewData["Title"]</div>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="badge text-bg-light border">@User.Identity!.Name</span>
+                    <a class="btn btn-sm btn-outline-danger" asp-page="/Account/Logout">Déconnexion</a>
+                </div>
+            </header>
+
+            <div class="content container-xxl py-4">
+                @if (TempData["Flash"] is string msg && !string.IsNullOrWhiteSpace(msg))
+                {
+                    <div class="alert alert-success">@msg</div>
+                }
+                @RenderBody()
+            </div>
+
+            <footer class="footer small text-muted">
+                
+            </footer>
+        </main>
+    </div>
+}
+else
+{
+    <div class="landing-wrap">
+        <header class="landing-nav">
+            <div class="brand">
+                <div class="logo">S</div>
+                <div class="brand-text">
+                    <div class="fw-bold">Sahty Care</div>
+                    <div class="small text-muted">Centre médical</div>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <a class="btn btn-outline-light btn-sm" asp-page="/Account/Login">Connexion</a>
+                <a class="btn btn-light btn-sm" asp-page="/Account/Register">Créer un compte</a>
+            </div>
+        </header>
+
+        <main class="landing-main container-xxl py-5">
+            @if (TempData["Flash"] is string msg && !string.IsNullOrWhiteSpace(msg))
+            {
+                <div class="alert alert-success">@msg</div>
+            }
+            @RenderBody()
+        </main>
+
+        <footer class="landing-footer small text-muted text-center py-4">
+            &copy; @DateTime.Now.Year Sahty &middot; Plateforme santé moderne
+        </footer>
+    </div>
+}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

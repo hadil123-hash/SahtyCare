@@ -1,0 +1,61 @@
+@page
+@model Sahty.Web.Areas.Admin.Pages.IndexModel
+@{
+    ViewData["Title"] = "Admin - Dashboard";
+}
+
+@if (Model.Errors.Count > 0)
+{
+    <div class="alert alert-warning">
+        @foreach (var err in Model.Errors)
+        {
+            <div>@err</div>
+        }
+    </div>
+}
+
+<div class="row g-3">
+    <div class="col-12 col-md-4">
+        <div class="card-modern p-4">
+            <div class="stat-card">
+                <div class="pill mb-2">Utilisateurs</div>
+                <div class="display-5 fw-bold">@Model.UsersCount</div>
+                <div class="text-muted small">Comptes actifs</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-4">
+        <div class="card-modern p-4">
+            <div class="stat-card">
+                <div class="pill mb-2">Rendez-vous</div>
+                <div class="display-5 fw-bold">@Model.AppointmentsCount</div>
+                <div class="text-muted small">Demandes et plannings</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-4">
+        <div class="card-modern p-4">
+            <div class="stat-card">
+                <div class="pill mb-2">Ordonnances</div>
+                <div class="display-5 fw-bold">@Model.PrescriptionsCount</div>
+                <div class="text-muted small">Prescriptions suivies</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card-modern p-4 d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <div>
+                <h2 class="h5 mb-1">Actions rapides</h2>
+                <p class="text-muted mb-0">Gérez équipes, rôles et rendez-vous en un clic.</p>
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+                <a class="btn btn-primary" asp-page="/Users">Gérer les utilisateurs</a>
+                <a class="btn btn-outline-primary" asp-page="/Appointments">Gérer les RDV</a>
+                <a class="btn btn-outline-primary" asp-page="/Doctors">Gérer les médecins</a>
+                <a class="btn btn-outline-primary" asp-page="/Patients">Gérer les patients</a>
+                <a class="btn btn-outline-primary" asp-page="/Pharmacists">Gérer les pharmaciens</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,79 @@
+@page
+@model Sahty.Web.Areas.Client.Pages.IndexModel
+@{
+    ViewData["Title"] = "Client - Dashboard";
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+{
+    <div class="alert alert-warning">@Model.ErrorMessage</div>
+}
+
+<div class="row g-3">
+    <div class="col-12 col-md-6">
+        <div class="card-modern p-4">
+            <div class="stat-card">
+                <div class="pill mb-2">Mes rendez-vous</div>
+                <div class="display-5 fw-bold">@Model.MyAppointments</div>
+                <div class="text-muted small">Planifies ou en attente</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6">
+        <div class="card-modern p-4">
+            <div class="stat-card">
+                <div class="pill mb-2">Mes ordonnances</div>
+                <div class="display-5 fw-bold">@Model.MyPrescriptions</div>
+                <div class="text-muted small">Disponibles pour suivi</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card-modern p-4 d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <div>
+                <h2 class="h5 mb-1">Actions rapides</h2>
+                <p class="text-muted mb-0">Prendre un rendez-vous, consulter le statut ou revoir vos prescriptions.</p>
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+                <a class="btn btn-primary" asp-page="/Appointments">Demander un RDV</a>
+                <a class="btn btn-outline-primary" asp-page="/Prescriptions">Voir mes ordonnances</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card-modern p-4">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <h2 class="h5 mb-0">Notifications</h2>
+                <span class="pill chip-muted">@Model.UnreadNotifications non lues</span>
+            </div>
+
+            @if (Model.Notifications.Count == 0)
+            {
+                <div class="text-muted">Aucune notification.</div>
+            }
+            else
+            {
+                <div class="vstack gap-2">
+                    @foreach (var n in Model.Notifications)
+                    {
+                        <div class="d-flex align-items-center justify-content-between border rounded-3 p-3">
+                            <div>
+                                <div class="fw-semibold">@n.Title</div>
+                                <div class="text-muted small">@n.Message</div>
+                            </div>
+                            <div class="text-end">
+                                <div class="small text-muted">@n.CreatedAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</div>
+                                @if (!string.IsNullOrWhiteSpace(n.LinkUrl))
+                                {
+                                    <a class="small" href="@n.LinkUrl">Ouvrir</a>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>

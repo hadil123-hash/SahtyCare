@@ -1,0 +1,72 @@
+@page
+@model Sahty.Web.Areas.Doctor.Pages.AppointmentsModel
+@{
+    ViewData["Title"] = "Doctor - Rendez-vous";
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+{
+    <div class="alert alert-warning">@Model.ErrorMessage</div>
+}
+
+@if (Model.IsLoading)
+{
+    <div class="alert alert-light d-flex align-items-center gap-2">
+        <div class="spinner-border spinner-border-sm" role="status"></div>
+        <div>Chargement...</div>
+    </div>
+}
+
+<div class="card-modern p-4">
+    <div class="d-flex align-items-center justify-content-between mb-2">
+        <h2 class="h5 mb-0">Mes rendez-vous</h2>
+        <span class="pill chip-muted">@Model.Items.Count</span>
+    </div>
+
+    @if (Model.Items.Count == 0 && string.IsNullOrWhiteSpace(Model.ErrorMessage))
+    {
+        <div class="text-muted">Aucun rendez-vous trouvé.</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table align-middle table-modern">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Patient</th>
+                                <th>Medecin</th>
+                                <th>Statut</th>
+                                <th style="width:220px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                @foreach (var a in Model.Items)
+                        {
+                            var status = (a.Status ?? "").ToLowerInvariant();
+                            var isAccepted = status == "accepted";
+                            var isRefused = status == "refused";
+                            <tr>
+                                <td>@a.Date.ToString("yyyy-MM-dd HH:mm")</td>
+                                <td class="text-muted">@(!string.IsNullOrWhiteSpace(a.PatientName) ? a.PatientName : a.PatientId.ToString())</td>
+                                <td class="text-muted">@(!string.IsNullOrWhiteSpace(a.DoctorName) ? a.DoctorName : a.DoctorId.ToString())</td>
+                                <td><span class="soft-badge">@a.Status</span></td>
+                                <td>
+                            <div class="d-flex gap-2">
+                                <form method="post" asp-page-handler="Accept">
+                                    <input type="hidden" name="id" value="@a.Id" />
+                                    <button class="btn btn-sm btn-outline-success" type="submit" disabled="@isAccepted">Accepter</button>
+                                </form>
+                                <form method="post" asp-page-handler="Refuse">
+                                    <input type="hidden" name="id" value="@a.Id" />
+                                    <button class="btn btn-sm btn-outline-danger" type="submit" disabled="@isRefused">Refuser</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

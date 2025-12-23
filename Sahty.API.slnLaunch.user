@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Nouveau profil",
+    "Projects": [
+      {
+        "Path": "API\\Sahty.API.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "BlazorSahty\\BlazorSahty.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

@@ -1,0 +1,92 @@
+@page
+@model Sahty.Web.Areas.Admin.Pages.UsersModel
+@{
+    ViewData["Title"] = "Admin - Utilisateurs";
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+{
+    <div class="alert alert-warning">@Model.ErrorMessage</div>
+}
+
+@if (Model.IsLoading)
+{
+    <div class="alert alert-light d-flex align-items-center gap-2">
+        <div class="spinner-border spinner-border-sm" role="status"></div>
+        <div>Chargement...</div>
+    </div>
+}
+
+<div class="row g-3">
+    <div class="col-12 col-lg-5">
+        <div class="card-modern p-4">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <h2 class="h5 mb-0">Actions</h2>
+                <span class="pill">Admin</span>
+            </div>
+            <div class="text-muted small">Gerez les roles depuis la liste des utilisateurs.</div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-7">
+        <div class="card-modern p-4">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <h2 class="h5 mb-0">Liste des utilisateurs</h2>
+                <span class="badge text-bg-light border">@Model.Users.Count</span>
+            </div>
+
+            @if (Model.Users.Count == 0 && string.IsNullOrWhiteSpace(Model.ErrorMessage))
+            {
+                <div class="text-muted">Aucun utilisateur trouve.</div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr>
+                                <th>Email</th>
+                                <th>Nom</th>
+                                <th>Role</th>
+                                <th style="width:240px;">Changer role</th>
+                                <th style="width:140px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var u in Model.Users)
+                            {
+                                <tr>
+                                    <td>@u.Email</td>
+                                    <td>@u.FullName</td>
+                                    <td><span class="badge text-bg-secondary">@u.Role</span></td>
+                                    <td>
+                                        <form method="post" asp-page-handler="SetRole" class="d-flex gap-2">
+                                            <input type="hidden" name="userId" value="@u.Id" />
+                                            <select class="form-select form-select-sm" name="role">
+                                                @foreach (var r in AppRoles.All)
+                                                {
+                                                    <option value="@r" selected="@(r == u.Role)">@r</option>
+                                                }
+                                            </select>
+                                            <button class="btn btn-sm btn-outline-primary" type="submit">OK</button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form method="post" asp-page-handler="DeleteUser" onsubmit="return confirm('Supprimer cet utilisateur ?');">
+                                            <input type="hidden" name="userId" value="@u.Id" />
+                                            <button class="btn btn-sm btn-outline-danger" type="submit">Supprimer</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
