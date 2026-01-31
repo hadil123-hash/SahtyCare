@@ -1,1 +1,1 @@
-Application de getion d'une pharmacie 
+Application de gestion d'une pharmacie 
